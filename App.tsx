@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import theme from "@/utils/theme";
+import {color, ThemeProvider} from "@shopify/restyle";
+import Navigation from "@/navigation";
+import {SafeAreaProvider} from "react-native-safe-area-context";
+import {StatusBar} from "expo-status-bar";
+import {colors} from "@/utils/theme/colors";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <SafeAreaProvider>
+                <Navigation/>
+                <StatusBar backgroundColor={theme.colors.blu100}/>
+            </SafeAreaProvider>
+        </ThemeProvider>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+

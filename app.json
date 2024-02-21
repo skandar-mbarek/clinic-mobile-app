@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "clinic-mobile-app",
-    "slug": "clinic-mobile-app",
+    "slug": "test",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6c1da68c-f083-4781-91d6-9cdbf0c5b3d8"
+      }
+    },
+    "owner": "skandar_mbarek"
   }
 }
