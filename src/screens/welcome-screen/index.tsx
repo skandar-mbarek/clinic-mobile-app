@@ -22,7 +22,7 @@ const WelcomeScreen = () => {
     return (
         <SafeAreaWrapper>
 
-            <LinearGradient style={{flex:1}} colors={[
+            <LinearGradient style={{flex: 1}} colors={[
                 theme.colors.blu100,
                 theme.colors.blu200,
                 theme.colors.blu300,
@@ -32,13 +32,13 @@ const WelcomeScreen = () => {
                 theme.colors.blu200,
                 theme.colors.blu100
             ]}>
-                <Box flex={1} justifyContent={"center"} >
-                    <Box alignItems={"center"} mb={"3.5"}  >
+                <Box flex={1} justifyContent={"center"}>
+                    <Box alignItems={"center"} mb={"3.5"}>
                         <Image
-                            source={require('@/assets/images/welcome.png')} style={{ height:300,width:300}}
+                            source={require('@/assets/images/welcome.png')} style={{height: 300, width: 300}}
                         />
                     </Box>
-                    <Text textAlign={"center"} variant={"textXl"} fontWeight={"700"} >
+                    <Text textAlign={"center"} variant={"textXl"} fontWeight={"700"}>
                         Welcome to the Clicnic app!
                     </Text>
                     <Text
@@ -79,9 +79,7 @@ const WelcomeScreen = () => {
 
 };
 const style = StyleSheet.create({
-    welcomeText : {
-
-    }
+        welcomeText: {}
     }
 )
 

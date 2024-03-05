@@ -4,7 +4,7 @@ import AuthStackNavigator from "@/navigation/auth-stack-navigator";
 
 const Navigation = () => {
 
-    const user = true
+    const token : boolean = true
 
     return (
         <NavigationContainer>

@@ -6,8 +6,12 @@ export type AuthStackParamList = {
     SignIn: undefined
     SignUp: undefined
     ForgotPassword: undefined
-    ResetPassword: undefined
-    VerifyPhoneNumber: undefined
+    ResetPassword: {
+        phoneNumber : string
+    }
+    VerifyPhoneNumber: {
+        phoneNumber: string
+    }
 }
 
 export type RootBottomTabParamList = {

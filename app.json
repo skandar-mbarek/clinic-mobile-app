@@ -26,11 +26,8 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "6c1da68c-f083-4781-91d6-9cdbf0c5b3d8"
-      }
-    },
-    "owner": "skandar_mbarek"
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

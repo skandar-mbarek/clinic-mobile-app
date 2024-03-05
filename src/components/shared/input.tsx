@@ -1,30 +1,38 @@
 import React from 'react';
 import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
 import theme, {Box, Text} from "@/utils/theme";
-import { AntDesign } from '@expo/vector-icons';
-import {border} from "@shopify/restyle";
-
+import {FieldError} from "react-hook-form";
 
 
 type InputProps = {
-    label : string
-    error?: undefined
-    icon? : React.ReactElement;
+    label: string
+    icon?: React.ReactElement;
+    error?: FieldError | undefined
+    errorMessage?: String
 } & TextInputProps
 
-const Input = ({icon,label,error}:InputProps) => {
+const Input = ({icon, label, secure, numericKeyboard, error, errorMessage, ...rest}: InputProps & {
+    [key: string]: any
+}) => {
     return (
-        <View style={styles.inputContainer}>
 
-            <Box m={"3"} >{icon}</Box>
-            <TextInput
-                placeholder={label}
-                style={styles.input}
+        <Box>
+            <View style={styles.inputContainer}>
 
+                <Box m={"3"}>{icon}</Box>
+                <TextInput
+                    placeholder={label}
+                    style={styles.input}
+                    {...rest}
+                />
 
-            />
-        </View>
-
+            </View>
+            {error && (
+                <Text color={"rose500"}>
+                    -{errorMessage}
+                </Text>
+            )}
+        </Box>
     );
 };
 
@@ -36,14 +44,15 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderRadius: theme.borderRadii["rounded-5xl"],
         paddingHorizontal: 10,
-        marginVertical: 10,
-        backgroundColor:theme.colors.gray300,
-        height:70
+
+        backgroundColor: theme.colors.white,
+        height: 60
     },
 
     input: {
         flex: 1,
-        height: 70,
+        height: 65,
+        fontSize: 18
     },
 });
 
