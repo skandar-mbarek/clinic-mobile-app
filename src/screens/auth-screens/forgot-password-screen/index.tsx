@@ -1,62 +1,56 @@
 import React, {useState} from 'react';
-import theme, {Box, Text} from "@/utils/theme";
 import SafeAreaWrapper from "@/components/shared/safe-area-wrapper";
 import {LinearGradient} from "expo-linear-gradient";
+import theme, {Box, Text} from "@/utils/theme";
 import BackButton from "@/components/shared/backButton";
-import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {AuthScreenNavigationType, AuthStackParamList} from "@/navigation/types";
 import {Controller, useForm} from "react-hook-form";
-import {ILogin, IVerify} from "@/types";
 import Input from "@/components/shared/input";
-import {Octicons } from "@expo/vector-icons";
+import {AntDesign} from "@expo/vector-icons";
 import {Button} from "@/components/shared/button";
-import {loginUser, verify} from "@/services/auth/auth";
+import {useNavigation} from "@react-navigation/native";
+import {AuthScreenNavigationType} from "@/navigation/types";
+import {IForgot} from "@/types";
+import {forgotPassword} from "@/services/auth/auth";
 import Error from "@/components/shared/error";
+import {forgotPasswordText} from "@/Constants/screen-text";
+import {inputErrorText, inputText} from "@/Constants/input-text";
+import {buttonText} from "@/Constants/button-text";
+import {TUNISIA_NUMBER} from "@/Constants/global-const";
 
 
-type VerifyScreenRouteProp = RouteProp<AuthStackParamList,"VerifyPhoneNumber">
+const ForgotPasswordScreen = () => {
 
+    const navigation = useNavigation<AuthScreenNavigationType<"ForgotPassword">>()
 
-const VerifyPhoneNumberScreen = () => {
-
-
-
-    const navigation = useNavigation<AuthScreenNavigationType<"VerifyPhoneNumber">>()
-
-
-    const route = useRoute<VerifyScreenRouteProp>()
-    const {phoneNumber} = route.params
-    console.log(phoneNumber,"azeazeazeaeae")
-
+    const [errorMessage, setErrorMessage] = useState("");
 
     const {
         control,
         handleSubmit,
         formState: {errors},
-    } = useForm<IVerify >({
-        defaultValues:{
-            otp:"",
+    } = useForm<IForgot>({
+        defaultValues: {
+            phoneNumber: "",
         }
     })
-    const [errorMessage , setErrorMessage] = useState("");
 
+    const navigateToResetPasswordScreen = (phoneNumber: string) => {
+        navigation.navigate("ResetPassword", {phoneNumber: phoneNumber})
+    }
 
-    const onSubmit = async (data: IVerify) => {
+    const onSubmit = async (data: IForgot) => {
         try {
-            const otp : string = data.otp
-            const _user = await verify(otp,phoneNumber)
-            console.log(_user)
-        } catch (e:any) {
-            console.log("screen",e.response.data.message)
+            const phoneNumber: string = TUNISIA_NUMBER+ data.phoneNumber
+            const response = await forgotPassword(phoneNumber)
+            navigateToResetPasswordScreen(phoneNumber)
+        } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }
     }
 
-
-
     return (
         <SafeAreaWrapper>
-            <LinearGradient style={{flex:1}} colors={[
+            <LinearGradient style={{flex: 1}} colors={[
                 theme.colors.blu100,
                 theme.colors.blu200,
                 theme.colors.blu300,
@@ -72,7 +66,7 @@ const VerifyPhoneNumberScreen = () => {
                 </Box>
                 <Box flex={1} justifyContent={"center"}>
                     <Box alignItems={"center"} mt={"13"}>
-                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>Verify phone number</Text>
+                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>{forgotPasswordText.TITLE}</Text>
                         <Text
                             textAlign={"center"}
                             mx={"13"}
@@ -81,7 +75,7 @@ const VerifyPhoneNumberScreen = () => {
                             variant={"textSm"}
                             color={"gray500"}
                         >
-                            Enter the code sent to your phone number.
+                            {forgotPasswordText.SUB_TITLE}
                         </Text>
 
                     </Box>
@@ -91,38 +85,37 @@ const VerifyPhoneNumberScreen = () => {
                             control={control}
                             rules={{
                                 required: true,
-
+                                pattern: /^[0-9]{8}$/,
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"Code"}
-                                    icon={<Octicons name="codescan-checkmark" size={24} color="black" />}
+                                    label={inputText.PHONE}
+                                    icon={<AntDesign name="phone" size={24} color="black"/>}
                                     onBlur={onBlur}
-                                    inputMode={"numeric"}
+                                    inputMode={"tel"}
                                     onChangeText={onChange}
                                     value={value}
-                                    error={errors.otp}
-                                    errorMessage={"enter the code"}
+                                    error={errors.phoneNumber}
+                                    errorMessage={inputErrorText.PHONE_ERROR}
                                 />
                             )}
-                            name={"otp"}
+                            name={"phoneNumber"}
                         />
 
-
                     </Box>
+                    {errorMessage !== "" && <Error message={errorMessage}/>}
 
-                    {errorMessage !==""&& <Error message={errorMessage}/>}
                     <Box mx={"6"} my={"4"}>
-                        <Button label={"Verify"} onPress={handleSubmit(onSubmit)} />
+                        <Button label={buttonText.VERIFY} onPress={handleSubmit(onSubmit)}/>
                     </Box>
-
 
 
                 </Box>
+
 
             </LinearGradient>
         </SafeAreaWrapper>
     );
 };
 
-export default VerifyPhoneNumberScreen;
+export default ForgotPasswordScreen;

@@ -13,6 +13,10 @@ import {Controller, useForm} from "react-hook-form";
 import {ILogin} from "@/types";
 import {loginUser} from "@/services/auth/auth";
 import Error from "@/components/shared/error";
+import {signInText} from "@/Constants/screen-text";
+import {inputErrorText, inputText} from "@/Constants/input-text";
+import {buttonText} from "@/Constants/button-text";
+import {TUNISIA_NUMBER} from "@/Constants/global-const";
 
 const SignInScreen = () => {
 
@@ -28,7 +32,7 @@ const SignInScreen = () => {
             password: ""
         }
     })
-    const [errorMessage , setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
 
     const navigateToSignUpScreen = () => {
@@ -40,14 +44,14 @@ const SignInScreen = () => {
 
     const onSubmit = async (data: ILogin) => {
         try {
+            data.phoneNumber = TUNISIA_NUMBER+data.phoneNumber
             const {phoneNumber, password} = data
+
             const _user = await loginUser({
                 phoneNumber,
                 password
             })
-            console.log(_user)
-        } catch (e : any) {
-            console.log("screen",e.response.data.message)
+        } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }
     }
@@ -71,7 +75,7 @@ const SignInScreen = () => {
                 </Box>
                 <Box flex={1} justifyContent={"flex-start"}>
                     <Box alignItems={"center"} mt={"13"}>
-                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>Sign in</Text>
+                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>{signInText.TITLE}</Text>
                         <Text
                             textAlign={"center"}
                             mx={"13"}
@@ -80,7 +84,7 @@ const SignInScreen = () => {
                             variant={"textSm"}
                             color={"gray500"}
                         >
-                            This application is exclusively designed for patients !
+                            {signInText.SUB_TITLE}
                         </Text>
 
                     </Box>
@@ -89,17 +93,18 @@ const SignInScreen = () => {
                             control={control}
                             rules={{
                                 required: true,
-
+                                pattern: /^[0-9]{8}$/,
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"Enter your phone number"}
+                                    label={inputText.PHONE}
+                                    inputMode={"tel"}
                                     icon={<AntDesign name="phone" size={24} color="black"/>}
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
                                     error={errors.phoneNumber}
-                                    errorMessage={"This phone number is not valid"}
+                                    errorMessage={inputErrorText.PHONE_ERROR}
                                 />
                             )}
                             name={"phoneNumber"}
@@ -117,7 +122,7 @@ const SignInScreen = () => {
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"Enter your password"}
+                                    label={inputText.PASSWORD}
                                     icon={<MaterialIcons name="password" size={24} color="black"/>}
                                     onBlur={onBlur}
                                     onChangeText={onChange}
@@ -125,7 +130,7 @@ const SignInScreen = () => {
                                     placeholder="Password"
                                     secureTextEntry
                                     error={errors.password}
-                                    errorMessage={"Enter your password"}
+                                    errorMessage={inputErrorText.PASSWORD_ERROR}
                                 />
                             )}
                             name="password"
@@ -143,7 +148,7 @@ const SignInScreen = () => {
                                     color={"blu600"}
                                     textDecorationLine={"underline"}
                                 >
-                                    Create account ?
+                                    {buttonText.CREATE_ACCOUNT}
                                 </Text>
                             </Box>
                         </Pressable>
@@ -156,15 +161,15 @@ const SignInScreen = () => {
                                     color={"blu600"}
                                     textDecorationLine={"underline"}
                                 >
-                                    Forgot password ?
+                                    {buttonText.FORGOT_PASSWORD}
                                 </Text>
                             </Box>
                         </Pressable>
 
                     </Box>
-                    {errorMessage !==""&& <Error message={errorMessage}/>}
+                    {errorMessage !== "" && <Error message={errorMessage}/>}
                     <Box mt={"5"} mx={"5"}>
-                        <Button label={"Sign In"} onPress={handleSubmit(onSubmit)}/>
+                        <Button label={buttonText.SIGN_IN} onPress={handleSubmit(onSubmit)}/>
                     </Box>
 
 

@@ -7,25 +7,21 @@ export interface IRegister {
     firstName: string
     lasName: string
     phoneNumber: string
-    email: string
     password: string
-    dateOfBirth: Date
-    cnamCode: string
-    state: string
-    city: string
-    country: string
-    street: string
-    zipCode: string
+    dateOfBirth: Date | null
     role: string
 }
-export interface IVerify{
-    otp:string
+
+export interface IVerify {
+    otp: string
 }
-export interface IForgot{
+
+export interface IForgot {
     phoneNumber: string
 }
+
 export interface IResetPassword {
-    phoneNumber : string
-    otp : string
-    newPassword : string
+    phoneNumber: string
+    otp: string
+    newPassword: string
 }

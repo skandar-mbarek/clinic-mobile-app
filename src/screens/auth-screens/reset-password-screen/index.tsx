@@ -4,49 +4,47 @@ import SafeAreaWrapper from "@/components/shared/safe-area-wrapper";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {AuthScreenNavigationType, AuthStackParamList} from "@/navigation/types";
 import {Controller, useForm} from "react-hook-form";
-import {IResetPassword, IVerify} from "@/types";
-import {resetPassword, verify} from "@/services/auth/auth";
+import {IResetPassword} from "@/types";
+import {resetPassword} from "@/services/auth/auth";
 import {LinearGradient} from "expo-linear-gradient";
 import BackButton from "@/components/shared/backButton";
 import Input from "@/components/shared/input";
 import {MaterialIcons, Octicons} from "@expo/vector-icons";
 import {Button} from "@/components/shared/button";
 import Error from "@/components/shared/error";
+import {resetPasswordText} from "@/Constants/screen-text";
+import {inputErrorText, inputText} from "@/Constants/input-text";
+import {buttonText} from "@/Constants/button-text";
 
 
-type ResetScreenRouteProp = RouteProp<AuthStackParamList,"ResetPassword">
+type ResetScreenRouteProp = RouteProp<AuthStackParamList, "ResetPassword">
 
 const ResetPasswordScreen = () => {
 
     const navigation = useNavigation<AuthScreenNavigationType<"ResetPassword">>()
 
 
-
     const route = useRoute<ResetScreenRouteProp>()
     const {phoneNumber} = route.params
-    console.log(phoneNumber,"azeazeazeaeae")
-
     const {
         control,
         handleSubmit,
         formState: {errors},
-    } = useForm<IResetPassword >({
-        defaultValues:{
-            phoneNumber:phoneNumber,
-            otp:"",
-            newPassword:"",
+    } = useForm<IResetPassword>({
+        defaultValues: {
+            phoneNumber: phoneNumber,
+            otp: "",
+            newPassword: "",
         }
     })
 
-    const [errorMessage , setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
 
     const onSubmit = async (data: IResetPassword) => {
         try {
             const _user = await resetPassword(data)
-            console.log(_user)
-        } catch (e : any) {
-            console.log("screen",e.response.data.message)
+        } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }
     }
@@ -54,7 +52,7 @@ const ResetPasswordScreen = () => {
     return (
 
         <SafeAreaWrapper>
-            <LinearGradient style={{flex:1}} colors={[
+            <LinearGradient style={{flex: 1}} colors={[
                 theme.colors.blu100,
                 theme.colors.blu200,
                 theme.colors.blu300,
@@ -70,7 +68,7 @@ const ResetPasswordScreen = () => {
                 </Box>
                 <Box flex={1} justifyContent={"center"}>
                     <Box alignItems={"center"} mt={"13"}>
-                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>Reset password</Text>
+                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>{resetPasswordText.TITLE}</Text>
                         <Text
                             textAlign={"center"}
                             mx={"13"}
@@ -79,7 +77,7 @@ const ResetPasswordScreen = () => {
                             variant={"textSm"}
                             color={"gray500"}
                         >
-                            Enter the code sent to your phone number. and your new password
+                            {resetPasswordText.SUB_TITLE}
                         </Text>
 
                     </Box>
@@ -89,18 +87,18 @@ const ResetPasswordScreen = () => {
                             control={control}
                             rules={{
                                 required: true,
-
+                                pattern: /^[0-9]{6}$/,
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"Code"}
-                                    icon={<Octicons name="codescan-checkmark" size={24} color="black" />}
+                                    label={inputText.CODE}
+                                    icon={<Octicons name="codescan-checkmark" size={24} color="black"/>}
                                     onBlur={onBlur}
                                     inputMode={"decimal"}
                                     onChangeText={onChange}
                                     value={value}
                                     error={errors.otp}
-                                    errorMessage={"enter the code"}
+                                    errorMessage={inputErrorText.CODE_ERROR}
                                 />
                             )}
                             name={"otp"}
@@ -117,7 +115,7 @@ const ResetPasswordScreen = () => {
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"New password"}
+                                    label={inputText.NEW_PASSWORD}
                                     icon={<MaterialIcons name="password" size={24} color="black"/>}
                                     onBlur={onBlur}
                                     inputMode={"text"}
@@ -125,17 +123,16 @@ const ResetPasswordScreen = () => {
                                     onChangeText={onChange}
                                     value={value}
                                     error={errors.newPassword}
-                                    errorMessage={"enter the new password"}
+                                    errorMessage={inputErrorText.NEW_PASSWORD_ERROR}
                                 />
                             )}
                             name={"newPassword"}
                         />
                     </Box>
-                    {errorMessage !==""&& <Error message={errorMessage}/>}
+                    {errorMessage !== "" && <Error message={errorMessage}/>}
                     <Box mx={"6"} my={"4"}>
-                        <Button label={"Verify"} onPress={handleSubmit(onSubmit)} />
+                        <Button label={buttonText.SUBMIT} onPress={handleSubmit(onSubmit)}/>
                     </Box>
-
 
 
                 </Box>

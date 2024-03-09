@@ -1,54 +1,60 @@
 import React, {useState} from 'react';
-import SafeAreaWrapper from "@/components/shared/safe-area-wrapper";
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import {LinearGradient} from "expo-linear-gradient";
 import theme, {Box, Text} from "@/utils/theme";
+import SafeAreaWrapper from "@/components/shared/safe-area-wrapper";
+import {LinearGradient} from "expo-linear-gradient";
 import BackButton from "@/components/shared/backButton";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {AuthScreenNavigationType, AuthStackParamList} from "@/navigation/types";
 import {Controller, useForm} from "react-hook-form";
+import {IVerify} from "@/types";
 import Input from "@/components/shared/input";
-import {AntDesign, Octicons} from "@expo/vector-icons";
+import {Octicons} from "@expo/vector-icons";
 import {Button} from "@/components/shared/button";
-import {useNavigation} from "@react-navigation/native";
-import {AuthScreenNavigationType} from "@/navigation/types";
-import {IForgot, IVerify} from "@/types";
-import {forgotPassword, verify} from "@/services/auth/auth";
+import {verify} from "@/services/auth/auth";
 import Error from "@/components/shared/error";
+import {verifyPhoneText} from "@/Constants/screen-text";
+import {inputErrorText, inputText} from "@/Constants/input-text";
+import {buttonText} from "@/Constants/button-text";
 
-const ForgotPasswordScreen = () => {
 
-    const navigation = useNavigation<AuthScreenNavigationType<"ForgotPassword">>()
+type VerifyScreenRouteProp = RouteProp<AuthStackParamList, "VerifyPhoneNumber">
 
-    const [errorMessage , setErrorMessage] = useState("");
+
+const VerifyPhoneNumberScreen = () => {
+
+
+    const navigation = useNavigation<AuthScreenNavigationType<"VerifyPhoneNumber">>()
+
+
+    const route = useRoute<VerifyScreenRouteProp>()
+    const {phoneNumber} = route.params
+
 
     const {
         control,
         handleSubmit,
         formState: {errors},
-    } = useForm<IForgot >({
-        defaultValues:{
-            phoneNumber:"",
+    } = useForm<IVerify>({
+        defaultValues: {
+            otp: "",
         }
     })
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const navigateToResetPasswordScreen = (phoneNumber : string) => {
-      navigation.navigate("ResetPassword", {phoneNumber : phoneNumber})
-    }
 
-    const onSubmit = async (data: IForgot) => {
+    const onSubmit = async (data: IVerify) => {
         try {
-            const phoneNumber : string = data.phoneNumber
-            const response = await forgotPassword(phoneNumber)
-            console.log(response)
-            navigateToResetPasswordScreen(data.phoneNumber)
-        } catch (e:any) {
-            console.log("screen",e.response.data.message)
+            const otp: string = data.otp
+            const _user = await verify(otp, phoneNumber)
+        } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }
     }
 
+
     return (
         <SafeAreaWrapper>
-            <LinearGradient style={{flex:1}} colors={[
+            <LinearGradient style={{flex: 1}} colors={[
                 theme.colors.blu100,
                 theme.colors.blu200,
                 theme.colors.blu300,
@@ -64,7 +70,7 @@ const ForgotPasswordScreen = () => {
                 </Box>
                 <Box flex={1} justifyContent={"center"}>
                     <Box alignItems={"center"} mt={"13"}>
-                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>Forgot password</Text>
+                        <Text variant={"text3Xl"} fontWeight={"700"} mb={"5"}>{verifyPhoneText.TITLE}</Text>
                         <Text
                             textAlign={"center"}
                             mx={"13"}
@@ -73,7 +79,7 @@ const ForgotPasswordScreen = () => {
                             variant={"textSm"}
                             color={"gray500"}
                         >
-                            Enter your phone number.
+                            {verifyPhoneText.SUB_TITLE}
                         </Text>
 
                     </Box>
@@ -83,38 +89,37 @@ const ForgotPasswordScreen = () => {
                             control={control}
                             rules={{
                                 required: true,
-
+                                pattern: /^[0-9]{6}$/,
                             }}
                             render={({field: {onChange, onBlur, value}}) => (
                                 <Input
-                                    label={"Your phone number"}
-                                    icon={<AntDesign name="phone" size={24} color="black"/>}
+                                    label={inputText.CODE}
+                                    icon={<Octicons name="codescan-checkmark" size={24} color="black"/>}
                                     onBlur={onBlur}
-                                    inputMode={"tel"}
+                                    inputMode={"numeric"}
                                     onChangeText={onChange}
                                     value={value}
-                                    error={errors.phoneNumber}
-                                    errorMessage={"enter your phone number"}
+                                    error={errors.otp}
+                                    errorMessage={inputErrorText.CODE_ERROR}
                                 />
                             )}
-                            name={"phoneNumber"}
+                            name={"otp"}
                         />
 
-                    </Box>
-                    {errorMessage !==""&& <Error message={errorMessage}/>}
 
+                    </Box>
+
+                    {errorMessage !== "" && <Error message={errorMessage}/>}
                     <Box mx={"6"} my={"4"}>
-                        <Button label={"Verify"} onPress={handleSubmit(onSubmit)} />
+                        <Button label={buttonText.VERIFY} onPress={handleSubmit(onSubmit)}/>
                     </Box>
-
 
 
                 </Box>
-
 
             </LinearGradient>
         </SafeAreaWrapper>
     );
 };
 
-export default ForgotPasswordScreen;
+export default VerifyPhoneNumberScreen;

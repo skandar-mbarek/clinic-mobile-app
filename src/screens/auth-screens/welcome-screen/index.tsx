@@ -1,11 +1,14 @@
 import React from 'react';
 import theme, {Box, Text} from "@/utils/theme";
 import {useNavigation} from "@react-navigation/native";
-import {Image, StyleSheet} from "react-native";
+import {Image} from "react-native";
 import {AuthScreenNavigationType} from "@/navigation/types";
 import SafeAreaWrapper from "@/components/shared/safe-area-wrapper";
 import {LinearGradient} from "expo-linear-gradient";
 import {Button} from "@/components/shared/button";
+import {imagesPath} from "@/assets/images";
+import {welcomeText} from "@/Constants/screen-text";
+import {buttonText} from "@/Constants/button-text";
 
 const WelcomeScreen = () => {
 
@@ -35,11 +38,11 @@ const WelcomeScreen = () => {
                 <Box flex={1} justifyContent={"center"}>
                     <Box alignItems={"center"} mb={"3.5"}>
                         <Image
-                            source={require('@/assets/images/welcome.png')} style={{height: 300, width: 300}}
+                            source={imagesPath.WELCOME_IMG} style={{height: 300, width: 300}}
                         />
                     </Box>
                     <Text textAlign={"center"} variant={"textXl"} fontWeight={"700"}>
-                        Welcome to the Clicnic app!
+                        {welcomeText.TITLE}
                     </Text>
                     <Text
                         textAlign={"center"}
@@ -49,15 +52,13 @@ const WelcomeScreen = () => {
                         variant={"textSm"}
                         color={"gray600"}
                     >
-                        To access the features of this application,
-                        please log in. If you don't have an account yet,
-                        feel free to sign up
+                        {welcomeText.DESCRIPTION}
                     </Text>
                     <Box mt={"3.5"} mx={"5"}>
-                        <Button label={"Sign in"} onPress={navigateToSignInScreen}/>
+                        <Button label={buttonText.SIGN_IN} onPress={navigateToSignInScreen}/>
                     </Box>
                     <Box mt={"2"} mx={"5"}>
-                        <Button label={"Sign up"} onPress={navigateToSignUpScreen}/>
+                        <Button label={buttonText.SIGN_UP} onPress={navigateToSignUpScreen}/>
                     </Box>
 
                 </Box>
@@ -69,7 +70,7 @@ const WelcomeScreen = () => {
                     variant={"textSm"}
                     color={"gray500"}
                 >
-                    This application is exclusively designed for patients !
+                    {welcomeText.BOTTOM_TEXT}
                 </Text>
 
 
@@ -78,9 +79,6 @@ const WelcomeScreen = () => {
     );
 
 };
-const style = StyleSheet.create({
-        welcomeText: {}
-    }
-)
+
 
 export default WelcomeScreen;

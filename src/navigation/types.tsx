@@ -7,7 +7,7 @@ export type AuthStackParamList = {
     SignUp: undefined
     ForgotPassword: undefined
     ResetPassword: {
-        phoneNumber : string
+        phoneNumber: string
     }
     VerifyPhoneNumber: {
         phoneNumber: string

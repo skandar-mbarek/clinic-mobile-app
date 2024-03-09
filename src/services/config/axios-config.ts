@@ -1,10 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store"
-import {endPoint} from "@/services/config/ws-config";
-
-
-const TIME_OUT = 30000
-export const USER_TOKEN = "token"
+import {endPoint, TIME_OUT} from "@/Constants/ws-config";
+import {USER_TOKEN} from "@/services/config/secureStore-config";
 
 
 const axiosInstance = axios.create({
@@ -12,17 +9,10 @@ const axiosInstance = axios.create({
     timeout: TIME_OUT,
 })
 
-export const saveToken = async (key: string, value: string) => {
-    try {
-        await SecureStore.setItemAsync(key, value)
-    } catch (e) {
-        console.log("error in saveToken", e)
-    }
-}
+
 axiosInstance.interceptors.request.use(async (req) => {
     try {
-        const access_token = await SecureStore.getItemAsync(USER_TOKEN)
-        req.headers.Authorization = access_token
+        req.headers.Authorization = await SecureStore.getItemAsync(USER_TOKEN)
         return req
     } catch (e) {
         return req
