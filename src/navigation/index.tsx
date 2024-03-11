@@ -7,6 +7,7 @@ import {Text} from "@/utils/theme";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import {setToken} from "@/store/actions";
+import AppStackNavigator from "@/navigation/app-stack-navigator";
 
 
 const Navigation = () => {
@@ -33,7 +34,7 @@ const Navigation = () => {
         <NavigationContainer>
 
             {token.token !== null ? (
-                <Text>zzzzzzzzzzzzzzzzz</Text>) : (
+                <AppStackNavigator/>) : (
                 <AuthStackNavigator/>)}
 
         </NavigationContainer>
