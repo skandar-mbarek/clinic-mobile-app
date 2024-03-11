@@ -1,7 +1,8 @@
 import {ILogin, IRegister, IResetPassword} from "@/types";
-import {saveToken, USER_TOKEN} from "@/services/config/secureStore-config";
+import {saveToken} from "@/services/config/secureStore-config";
 import {endPoint} from "@/Constants/ws-config";
 import axiosInstance from "@/services/config/axios-config";
+import {USER_TOKEN} from "@/Constants/global-const";
 
 
 export const registerUser = async (user: IRegister) => {

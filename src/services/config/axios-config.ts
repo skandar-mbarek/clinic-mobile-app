@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store"
 import {endPoint, TIME_OUT} from "@/Constants/ws-config";
-import {USER_TOKEN} from "@/services/config/secureStore-config";
+import {USER_TOKEN} from "@/Constants/global-const";
 
 
 const axiosInstance = axios.create({
