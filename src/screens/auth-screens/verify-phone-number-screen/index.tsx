@@ -15,6 +15,8 @@ import Error from "@/components/shared/error";
 import {verifyPhoneText} from "@/Constants/screen-text";
 import {inputErrorText, inputText} from "@/Constants/input-text";
 import {buttonText} from "@/Constants/button-text";
+import {useDispatch} from "react-redux";
+import {setToken} from "@/store/actions";
 
 
 type VerifyScreenRouteProp = RouteProp<AuthStackParamList, "VerifyPhoneNumber">
@@ -22,7 +24,7 @@ type VerifyScreenRouteProp = RouteProp<AuthStackParamList, "VerifyPhoneNumber">
 
 const VerifyPhoneNumberScreen = () => {
 
-
+    const dispatch = useDispatch();
     const navigation = useNavigation<AuthScreenNavigationType<"VerifyPhoneNumber">>()
 
 
@@ -46,6 +48,8 @@ const VerifyPhoneNumberScreen = () => {
         try {
             const otp: string = data.otp
             const _user = await verify(otp, phoneNumber)
+            dispatch(setToken(_user.token))
+
         } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }

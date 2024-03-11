@@ -15,6 +15,8 @@ import Error from "@/components/shared/error";
 import {resetPasswordText} from "@/Constants/screen-text";
 import {inputErrorText, inputText} from "@/Constants/input-text";
 import {buttonText} from "@/Constants/button-text";
+import {useDispatch} from "react-redux";
+import {setToken} from "@/store/actions";
 
 
 type ResetScreenRouteProp = RouteProp<AuthStackParamList, "ResetPassword">
@@ -22,6 +24,7 @@ type ResetScreenRouteProp = RouteProp<AuthStackParamList, "ResetPassword">
 const ResetPasswordScreen = () => {
 
     const navigation = useNavigation<AuthScreenNavigationType<"ResetPassword">>()
+    const dispatch = useDispatch();
 
 
     const route = useRoute<ResetScreenRouteProp>()
@@ -44,6 +47,8 @@ const ResetPasswordScreen = () => {
     const onSubmit = async (data: IResetPassword) => {
         try {
             const _user = await resetPassword(data)
+            dispatch(setToken(_user.token))
+
         } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }

@@ -17,8 +17,12 @@ import {signInText} from "@/Constants/screen-text";
 import {inputErrorText, inputText} from "@/Constants/input-text";
 import {buttonText} from "@/Constants/button-text";
 import {TUNISIA_NUMBER} from "@/Constants/global-const";
+import {useDispatch} from "react-redux";
+import {setToken} from "@/store/actions";
 
 const SignInScreen = () => {
+
+    const dispatch = useDispatch();
 
 
     const navigation = useNavigation<AuthScreenNavigationType<"SignIn">>()
@@ -51,6 +55,7 @@ const SignInScreen = () => {
                 phoneNumber,
                 password
             })
+            dispatch(setToken(_user.token))
         } catch (e: any) {
             setErrorMessage(e.response.data.message)
         }

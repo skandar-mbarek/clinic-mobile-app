@@ -3,6 +3,9 @@ import {saveToken} from "@/services/config/secureStore-config";
 import {endPoint} from "@/Constants/ws-config";
 import axiosInstance from "@/services/config/axios-config";
 import {USER_TOKEN} from "@/Constants/global-const";
+import {useDispatch} from "react-redux";
+import {setToken} from "@/store/actions";
+
 
 
 export const registerUser = async (user: IRegister) => {
@@ -17,6 +20,7 @@ export const registerUser = async (user: IRegister) => {
 export const loginUser = async ({phoneNumber, password}: ILogin) => {
 
 
+
     try {
         const response = await axiosInstance.post(endPoint.LOGIN, {
             phoneNumber,
@@ -26,6 +30,7 @@ export const loginUser = async ({phoneNumber, password}: ILogin) => {
         await saveToken(USER_TOKEN, _token)
         return response.data
     } catch (e) {
+        console.log(e)
         throw e;
     }
 }

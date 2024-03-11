@@ -1,32 +1,40 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
 import AuthStackNavigator from "@/navigation/auth-stack-navigator";
-import {getToken, resetToken} from "@/services/config/secureStore-config";
+import {getToken} from "@/services/config/secureStore-config";
 import {USER_TOKEN} from "@/Constants/global-const";
 import {Text} from "@/utils/theme";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@/store/store";
+import {setToken} from "@/store/actions";
+
 
 const Navigation = () => {
 
-    const [user,setUser] = useState<string|null>(null);
-    useEffect(()=>{
-        const fetchData = async ()=>{
-        try {
-            const _user = await getToken(USER_TOKEN);
-            console.log("User:", _user);
+    const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.data)
 
-            setUser(_user);
-        }catch (e){
-            console.error("error in navigation",e)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const _user = await getToken(USER_TOKEN);
+                console.log("User:", _user);
+                dispatch(setToken(_user))
+            } catch (e) {
+                console.error("error in navigation", e)
+            }
         }
-        }
-        fetchData();
-    },[user])
+         fetchData();
+    }, [])
 
 
     return (
         <NavigationContainer>
 
-            {user!==null ? (<Text>zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz</Text>) : (<AuthStackNavigator/>)}
+            {token.token !== null ? (
+                <Text>zzzzzzzzzzzzzzzzz</Text>) : (
+                <AuthStackNavigator/>)}
 
         </NavigationContainer>
 
