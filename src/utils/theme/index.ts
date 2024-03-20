@@ -28,6 +28,9 @@ const theme = createTheme({
         "rounded-4xl": 16,
         "rounded-5xl": 20,
         "rounded-7xl": 28,
+        "rounded-8xl": 44,
+
+
     },
     textVariants,
 })

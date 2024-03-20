@@ -17,7 +17,7 @@ export const Button = ({label, onPress, onLongPress, disabled}: ButtonProps) => 
             onLongPress={onLongPress}
             disabled={disabled}
         >
-            <Box bg={"green700"} py={"4"} borderRadius={"rounded-7xl"}>
+            <Box bg={"green"} py={"4"} borderRadius={"rounded-7xl"}>
                 <Text
                     variant={"textBase"}
                     fontWeight={"900"}

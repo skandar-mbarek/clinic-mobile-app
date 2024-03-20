@@ -12,9 +12,13 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(async (req) => {
     try {
-        req.headers.Authorization = await SecureStore.getItemAsync(USER_TOKEN)
+        const token = await SecureStore.getItemAsync(USER_TOKEN)
+        if (token) {
+            req.headers.Authorization = `Bearer ${token}`;
+        }
         return req
     } catch (e) {
+        console.error('Error fetching token:', e);
         return req
     }
 })

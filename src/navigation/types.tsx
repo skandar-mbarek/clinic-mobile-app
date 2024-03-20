@@ -1,6 +1,7 @@
 import {CompositeNavigationProp, CompositeScreenProps, NavigatorScreenParams} from "@react-navigation/native";
 import {NativeStackNavigationProp, NativeStackScreenProps} from "@react-navigation/native-stack";
 import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {IDoctor} from "@/types";
 
 export type AuthStackParamList = {
     Welcome: undefined
@@ -17,30 +18,34 @@ export type AuthStackParamList = {
 
 export type RootBottomTabParamList = {
     HomeStack: NavigatorScreenParams<HomeStackParamList>
-    DoctorsStack : NavigatorScreenParams<DoctorStackParamList>
-    AppointmentStack:NavigatorScreenParams<AppointmentStackParamList>
-    ConsultationStack:NavigatorScreenParams<ConsultationStackParamList>
-    ProfileStack : NavigatorScreenParams<ProfileStackParamList>
+    DoctorsStack: NavigatorScreenParams<DoctorStackParamList>
+    AppointmentStack: NavigatorScreenParams<AppointmentStackParamList>
+    ConsultationStack: NavigatorScreenParams<ConsultationStackParamList>
+    ProfileStack: NavigatorScreenParams<ProfileStackParamList>
 }
 export type HomeStackParamList = {
-    Home : undefined
+    Home: undefined
 }
 export type DoctorStackParamList = {
-    Doctors : undefined
+    Doctors: undefined
+    DoctorDetails: {
+        doctor: IDoctor
+    }
+    TakeAppointment:undefined
 }
 export type AppointmentStackParamList = {
-    Appointments : undefined
+    Appointments: undefined
 }
-export type ConsultationStackParamList ={
-    Consultations : undefined
+export type ConsultationStackParamList = {
+    Consultations: undefined
 }
 
-export type ProfileStackParamList ={
-    Profile : undefined
+export type ProfileStackParamList = {
+    Profile: undefined
 }
 
 export type AppStackParamList = {
-    Root : NavigatorScreenParams<RootBottomTabParamList>
+    Root: NavigatorScreenParams<RootBottomTabParamList>
 }
 
 export type RootStackParamList = {
@@ -66,3 +71,18 @@ export type RootTabScreenProps<Screen extends keyof RootBottomTabParamList> =
         BottomTabScreenProps<RootBottomTabParamList, Screen>,
         NativeStackScreenProps<RootBottomTabParamList>
     >
+export type DoctorsNavigationType =
+    NativeStackNavigationProp<DoctorStackParamList>
+
+
+export type AppointmentsNavigationType =
+    NativeStackNavigationProp<AppointmentStackParamList>
+
+export type ConsultationsNavigationType =
+    NativeStackNavigationProp<ConsultationStackParamList>
+
+export type HomeNavigationType =
+    NativeStackNavigationProp<HomeStackParamList>
+
+export type ProfileNavigationType =
+    NativeStackNavigationProp<ProfileStackParamList>

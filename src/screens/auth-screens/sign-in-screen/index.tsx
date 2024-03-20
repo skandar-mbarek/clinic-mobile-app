@@ -48,7 +48,7 @@ const SignInScreen = () => {
 
     const onSubmit = async (data: ILogin) => {
         try {
-            data.phoneNumber = TUNISIA_NUMBER+data.phoneNumber
+            data.phoneNumber = TUNISIA_NUMBER + data.phoneNumber
             const {phoneNumber, password} = data
 
             const _user = await loginUser({

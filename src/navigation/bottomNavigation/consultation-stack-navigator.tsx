@@ -14,7 +14,7 @@ const ConsultationStackNavigator = () => {
                 name={"Consultations"}
                 component={ConsultationScreen}
                 options={{
-                    headerShown : false
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

@@ -17,7 +17,12 @@ import Error from "@/components/shared/error";
 import {signUpText} from "@/Constants/screen-text";
 import {inputErrorText, inputText} from "@/Constants/input-text";
 import {buttonText} from "@/Constants/button-text";
-import {TUNISIA_NUMBER} from "@/Constants/global-const";
+import {GENDER, TUNISIA_NUMBER} from "@/Constants/global-const";
+import {SelectList} from "react-native-dropdown-select-list";
+import SelectDropdown from 'react-native-select-dropdown'
+import {Checkbox} from "expo-checkbox";
+import {colors} from "@/utils/theme/colors";
+
 
 
 const SignUpScreen = () => {
@@ -36,6 +41,7 @@ const SignUpScreen = () => {
         defaultValues: {
             firstName: "",
             lasName: "",
+            gender : GENDER.male,
             phoneNumber: "",
             password: "",
             dateOfBirth: null,
@@ -83,7 +89,7 @@ const SignUpScreen = () => {
 
     const onSubmit = async (data: IRegister) => {
         try {
-            data.phoneNumber = TUNISIA_NUMBER+data.phoneNumber
+            data.phoneNumber = TUNISIA_NUMBER + data.phoneNumber
             const responseData = await registerUser(data);
             navigateToVerifyPhoneNumberScreen(data.phoneNumber)
 
@@ -171,6 +177,72 @@ const SignUpScreen = () => {
                             name={"lasName"}
                         />
                     </Box>
+                    {/*gender ...r.......*/}
+
+                    <Box mx={"4"} my={"2"}>
+                        <Controller
+                            control={control}
+                            rules={{
+                                required: true,
+                            }}
+                            render={({field: {onChange, onBlur, value}}) => (
+
+                                <Box
+                                    flexDirection={"row"}
+                                    justifyContent={"space-around"}
+                                >
+                                    <Box
+                                        flexDirection={"row"}
+                                        alignItems={"center"}
+                                    >
+                                        <Text
+                                            variant={"textXl"}
+                                            fontWeight={"700"}
+                                            color={"gray700"}
+                                            mr={"2"}
+                                        >
+                                            {signUpText.GENDER_MALE}
+                                        </Text>
+                                        <Checkbox
+                                            value={value==="MALE"}
+                                            onValueChange={()=>setValue("gender",GENDER.male)}
+                                            style={{
+                                                borderRadius:5,
+                                                backgroundColor:colors.white,
+                                                borderWidth:1,
+                                                borderColor:colors.gray900
+                                            }}
+                                        />
+                                    </Box>
+                                    <Box
+                                        flexDirection={"row"}
+                                        alignItems={"center"}>
+                                        <Text
+                                            variant={"textXl"}
+                                            fontWeight={"700"}
+                                            color={"gray700"}
+                                            mr={"2"}
+                                        >
+                                            {signUpText.GENDER_FEMALE}
+                                        </Text>
+                                        <Checkbox
+                                            value={value=="FEMALE"}
+                                            onValueChange={()=>setValue("gender",GENDER.female)}
+                                            style={{
+                                                borderRadius:5,
+                                                backgroundColor:colors.white,
+                                                borderWidth:1,
+                                                borderColor:colors.gray900
+                                            }}
+                                        />
+                                    </Box>
+                                </Box>
+
+
+                            )}
+                            name={"gender"}
+                        />
+                    </Box>
 
                     {/*DateOfBirth .......*/}
                     {(
@@ -209,6 +281,8 @@ const SignUpScreen = () => {
                                         display={"spinner"}
                                         value={value ? value : new Date()}
                                         onChange={handleOnChange}
+                                        maximumDate={new Date()}
+                                        style={{backgroundColor:"red"}}
                                     />
                                 )}
                                 name={"dateOfBirth"}

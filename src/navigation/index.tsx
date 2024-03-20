@@ -1,43 +1,52 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from "@react-navigation/native";
-import AuthStackNavigator from "@/navigation/auth-stack-navigator";
+import AuthStackNavigator from "@/navigation/mainNavigation/auth-stack-navigator";
 import {getToken} from "@/services/config/secureStore-config";
 import {USER_TOKEN} from "@/Constants/global-const";
-import {Text} from "@/utils/theme";
+import {Box} from "@/utils/theme";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import {setToken} from "@/store/actions";
-import AppStackNavigator from "@/navigation/app-stack-navigator";
+import AppStackNavigator from "@/navigation/mainNavigation/app-stack-navigator";
 
 
 const Navigation = () => {
-
+    const [mount, setMounted] = useState(false)
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.data)
 
+    const fetchData = async () => {
+        try {
+            const _user = await getToken(USER_TOKEN);
+            dispatch(setToken(_user))
+            setMounted(true)
+        } catch (e) {
+            console.error("error in navigation", e)
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const _user = await getToken(USER_TOKEN);
-                console.log("User:", _user);
-                dispatch(setToken(_user))
-            } catch (e) {
-                console.error("error in navigation", e)
-            }
-        }
-         fetchData();
+
+        fetchData();
     }, [])
 
 
     return (
+
         <NavigationContainer>
 
-            {token.token !== null ? (
-                <AppStackNavigator/>) : (
-                <AuthStackNavigator/>)}
+            {mount ? (
+                    <Box flex={1}>
+                        {token.token ? (
+
+                            <AppStackNavigator/>) : (
+                            <AuthStackNavigator/>)}
+                    </Box>) :
+                null
+            }
 
         </NavigationContainer>
+
 
     );
 };

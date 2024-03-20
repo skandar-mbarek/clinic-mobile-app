@@ -5,4 +5,5 @@ export const buttonText = {
     SUBMIT: "Submit",
     CREATE_ACCOUNT: "Create account ?",
     FORGOT_PASSWORD: "Forgot password ?",
+    TAKE_APPOINTMENT:"Take appointment"
 }

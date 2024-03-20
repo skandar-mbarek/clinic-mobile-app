@@ -40,7 +40,7 @@ const ForgotPasswordScreen = () => {
 
     const onSubmit = async (data: IForgot) => {
         try {
-            const phoneNumber: string = TUNISIA_NUMBER+ data.phoneNumber
+            const phoneNumber: string = TUNISIA_NUMBER + data.phoneNumber
             const response = await forgotPassword(phoneNumber)
             navigateToResetPasswordScreen(phoneNumber)
         } catch (e: any) {

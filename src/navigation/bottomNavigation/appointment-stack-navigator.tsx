@@ -1,6 +1,5 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {AppointmentStackParamList} from "@/navigation/types";
-import Navigation from "@/navigation/index";
 import AppointmentsScreen from "@/screens/appointment-screen/appointments-screen";
 
 
@@ -15,7 +14,7 @@ const AppointmentStackNavigator = () => {
                 name={"Appointments"}
                 component={AppointmentsScreen}
                 options={{
-                    headerShown : false
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

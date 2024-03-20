@@ -14,7 +14,7 @@ const ProfileStackNavigator = () => {
                 name={"Profile"}
                 component={ProfileScreen}
                 options={{
-                    headerShown:false
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

@@ -1,18 +1,25 @@
-import {SET_TOKEN} from "@/store/types";
+import {GET_USER, SET_TOKEN} from "@/store/types";
+import { combineReducers } from 'redux';
 
-const initialState = {
-    token : null,
+interface IState {
+    token: string | null;
+    user: any;
 }
-
-
-type ActionType = {
-    type : string,
-    payload : any,
+export const initialState: IState = {
+    token: null,
+    user: null,
 }
-export default (state = initialState,{type,payload}:ActionType)=>{
-    switch (type){
+export type ActionType = {
+    type: string,
+    payload: any,
+}
+export default (state: IState = initialState, {type, payload}: ActionType):IState => {
+    switch (type) {
         case SET_TOKEN:
-            return{...state,token:payload}
+            return {...state, token: payload}
+        case GET_USER:
+            return {...state, user: payload}
+        default:
+            return state;
     }
-    return state
 }
